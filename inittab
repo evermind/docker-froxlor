@@ -1,0 +1,5 @@
+id:2:initdefault:
+
+si::sysinit:/etc/init.d/rcS
+
+l2:2:wait:/etc/init.d/rc 2

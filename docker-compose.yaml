@@ -1,0 +1,27 @@
+---
+
+version: "3.6"
+services:
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_USER: froxlor
+      MYSQL_PASSWORD: froxlor
+      MYSQL_DATABASE: froxlor
+      MYSQL_ROOT_PASSWORD: r
+    volumes:
+    - ./data/mysql:/var/lib/mysql
+  froxlor:
+    build: .
+    image: froxlor
+    tmpfs:
+    - /run
+    - /tmp
+    ports:
+    - 9088:8088
+    - 9080:80
+    volumes:
+    - ./data/customers:/var/customers
+    - ./data/froxlor:/var/froxlor-data
+
+
