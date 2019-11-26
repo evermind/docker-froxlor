@@ -1,107 +1,98 @@
-FROM debian:10-slim
+FROM debian:10-slim as build
 
+# Initial setup
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
-    apt-get -y install curl wget apt-utils gnupg2 && \
-    # configure apt
-    rm /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian buster main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb http://security.debian.org/debian-security buster/updates main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb http://deb.debian.org/debian buster-updates main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb http://debian.froxlor.org/ buster main" >> /etc/apt/sources.list && \
-    curl -s https://deb.froxlor.org/froxlor.gpg | apt-key add - && \
-    echo "deb http://repo.liveconfig.com/debian/ buster php" >> /etc/apt/sources.list && \
+    apt-get -y install curl wget apt-utils gnupg2
+
+# Configure APT repositories
+ADD config/sources.list /etc/apt/sources.list
+
+# Update the system
+RUN curl -s https://deb.froxlor.org/froxlor.gpg | apt-key add - && \
     curl -s https://www.liveconfig.com/liveconfig.key | apt-key add - && \
     apt-get update && \
     # upgrade everything
-    apt-get -y dist-upgrade && \
-    # install basic tools and init system
-    apt-get install -y openrc busybox && \
+    apt-get -y dist-upgrade
+
+# install and configure the init system
+RUN apt-get install -y openrc busybox && \
     # configure the init system
     sed -i /etc/rc.conf \
+      # Allow any env variable to be passed through init into the container
       -e 's|#rc_env_allow=".*"|rc_env_allow="\*"|g' \
+      # Tell the init system that some services are already provided
       -e 's|#rc_provide=".*"|rc_provide="loopback net"|g' \
-      -e 's|#rc_sys=".*"|rc_sys="docker"|g' && \
-    # let busybox start openrc so that we have propper shutdown handling
-    echo "::sysinit:/sbin/openrc sysinit\n::wait:/sbin/openrc boot\n::wait:/sbin/openrc default" \
-      > /etc/inittab && \
-    # Install some more useful tools
-    apt-get install -y less nano
+      # Set docker as subsystem
+      -e 's|#rc_sys=".*"|rc_sys="docker"|g'
 
+# configure inittab for busybox-init
+ADD config/inittab /etc/inittab
+
+# Install apache+php+froxlor and dependencies
 RUN export DEBIAN_FRONTEND=noninteractive && \
-    # Install apache+php+froxlor
     apt-get install -y --no-install-recommends \
       apache2 libapache2-mod-fcgid apache2-suexec-pristine \
       libapache2-mod-php \
       php-curl php-cli php-fpm imagemagick \
-      froxlor html2text
+      froxlor html2text cron \
+      # Install some more useful tools
+      less nano
 
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    # TODO: mit installieren
-    apt-get install -y --no-install-recommends \
-      cron
-
-RUN \
-    # Check froxlor prerequisites
-    HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text && \
-    HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text | grep -e 'All requirements are satisfied' > /dev/null
-
-RUN \
-    a2dissite 000-default && \
-    # configure froxlor default vhost
-    echo '\
-Listen *:8088\n\
-NameVirtualHost *:8088\n\
-<VirtualHost *:8088>\n\
-        ServerAdmin webmaster@localhost\n\
-        DocumentRoot /var/www/froxlor\n\
-        ErrorLog ${APACHE_LOG_DIR}/error.log\n\
-        CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
-</VirtualHost>' > /etc/apache2/sites-enabled/00_default_froxlor_port_8088.conf
-
-RUN \
-    # configure froxlor to use external userdata file
-    mkdir -p /var/froxlor-data/userdata && \
+# configure froxlor to use externalized userdata file
+RUN mkdir -p /var/froxlor-data/userdata && \
     chown www-data.www-data /var/froxlor-data/userdata && \
     ln -s /var/froxlor-data/userdata/userdata.inc.php /var/www/froxlor/lib/userdata.inc.php
 
-RUN \
-    # Add init script (special encoding of header to avoid that it's ignored as a dockerfile comment...)
-    echo '#!/bin/sh\n\
-\n### BEGIN INIT INFO\
-\n# Provides:          prepare-froxlor\
-\n# Default-Start:     2 3 4 5\
-\n# Short-Description: prepare froxlor at boot time\
-\n# Description:       prepare froxlor at boot time\
-\n### END INIT INFO\n\
-echo $0 $1\n\
-if [ "$1" != "start" ]; then\n\
-  exit 0\n\
-fi\n\
-\n\
-echo "Setting froxlor userdata permissions"\n\
-mkdir -p /var/froxlor-data/userdata\n\
-[ -e /var/froxlor-data/userdata/userdata.inc.php ] || touch /var/froxlor-data/userdata/userdata.inc.php\n\
-chown -R www-data.www-data /var/froxlor-data/userdata\n\
-mkdir -p /var/customers/logs\n\
-mkdir -p /var/customers/tmp\n\
-chmod 1777 /var/customers/tmp\n\
-' \
-      > /etc/init.d/prepare-froxlor.sh && \
-    chmod 0755 /etc/init.d/prepare-froxlor.sh && \
-    rc-update add prepare-froxlor.sh boot && \
-    # Create froxlor initial crontab (on success it's replaced by the default crontab)
-    echo '\n\
-* * * * * root /usr/bin/php -q /var/www/froxlor/scripts/froxlor_master_cronjob.php --tasks 1 --force > /dev/null 2>&1\n\
-'\
-      > /etc/cron.d/froxlor
+# Configure apache
+ADD config/00_default_froxlor_port_8088.conf /etc/apache2/sites-enabled/00_default_froxlor_port_8088.conf
+RUN a2dissite 000-default && \
+    a2enmod headers suexec proxy_fcgi actions rewrite \
+      proxy_http proxy_ajp proxy_balancer
 
-RUN \
-    # cleanup, remove unused services
-    rc-update del mysql default && \
+# configure libnss-extrausers
+
+RUN apt-get install libnss-extrausers && \
+    mkdir -p /var/lib/extrausers && \
+    touch /var/lib/extrausers/passwd && \
+    touch /var/lib/extrausers/group && \
+    touch /var/lib/extrausers/shadow
+ADD config/nsswitch.conf /etc/nsswitch.conf
+
+
+# configure awstats
+RUN apt-get install -y --no-install-recommends awstats && \
+    ln -s /usr/share/awstats/tools/awstats_buildstaticpages.pl /usr/bin/awstats_buildstaticpages.pl && \
+    mv /etc/awstats/awstats.conf /etc/awstats/awstats.model.conf && \
+    sed -i.bak 's/^DirData/# DirData/' /etc/awstats//awstats.model.conf && \
+    sed -i.bak 's|^\\(DirIcons=\\).*$|\\1\\"/awstats-icon\\"|' /etc/awstats//awstats.model.conf && \
+    echo "# disabled by froxlor docker setup" > /etc/cron.d/awstat
+
+# configure logrotate
+RUN apt-get install -y --no-install-recommends logrotate
+ADD config/froxlor-logrotate /etc/logrotate.d/froxlor
+
+# create and activate initalizing script for system start
+ADD config/prepare-system.sh /etc/init.d/prepare-system.sh
+ADD config/prepare-froxlor.php /etc/init.d/prepare-froxlor.php
+RUN rc-update add prepare-system.sh boot
+
+# create initial crontab
+#ADD config/froxlor-crontab /etc/cron.d/froxlor
+
+# Check froxlor prerequisites to ensure all requirements are met
+RUN HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text && \
+    HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text | grep -e 'All requirements are satisfied' > /dev/null
+
+# cleanup, remove unused services and files
+RUN rc-update del mysql default && \
     rc-update del rsync default && \
-    rm -f /etc/init.d/hwclock.sh /etc/init.d/procps
+    rm -f /etc/init.d/hwclock.sh /etc/init.d/procps && \
+    rm -rf /tmp /var/lib/apt/lists/*
 
+# 
+#FROM scratch
+#COPY --from=build / /
 
 # Required for openrc to run without warnings
 VOLUME ["/sys/fs/cgroup","/var/customers","/var/froxlor-data"]

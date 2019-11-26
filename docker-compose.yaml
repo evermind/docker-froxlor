@@ -18,7 +18,7 @@ services:
     - /run
     - /tmp
     ports:
-    - 9088:8088
+    - 8088:8088
     - 9080:80
     volumes:
     - ./data/customers:/var/customers

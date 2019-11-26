@@ -1,0 +1,10 @@
+# Inittab for busybox-init which starts openrc
+# We use busybox here because it reacty properly to docker shutdown signals
+
+# Startup process
+
+::sysinit:/sbin/openrc sysinit
+::wait:/sbin/openrc boot
+::wait:/sbin/openrc default
+
+# TODO: shutdown https://git.busybox.net/busybox/tree/examples/inittab

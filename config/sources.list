@@ -1,0 +1,10 @@
+# Debian repositories
+deb http://deb.debian.org/debian buster main contrib non-free
+deb http://security.debian.org/debian-security buster/updates main contrib non-free
+deb http://deb.debian.org/debian buster-updates main contrib non-free
+
+# Froxlor repo
+deb http://debian.froxlor.org/ buster main
+
+# Liveconfig repo for PHP-Versions installed in /opt
+deb http://repo.liveconfig.com/debian/ buster php
