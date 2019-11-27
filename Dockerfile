@@ -47,7 +47,7 @@ RUN mkdir -p /var/froxlor-data/userdata && \
 # Configure apache
 ADD config/00_default_froxlor_port_8088.conf /etc/apache2/sites-enabled/00_default_froxlor_port_8088.conf
 RUN a2dissite 000-default && \
-    a2enmod headers suexec proxy_fcgi actions rewrite \
+    a2enmod ssl headers suexec proxy_fcgi actions rewrite \
       proxy_http proxy_ajp proxy_balancer
 
 # configure libnss-extrausers
