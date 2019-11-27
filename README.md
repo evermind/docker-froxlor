@@ -46,7 +46,7 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Enable Let's Encrypt
     * Switch to the Acme2 Test endpoint until everything works!
 * Resources -> IPs and Ports
-    * add IP 0.0.0.0, Port 80, Disable "Create Listen statement"
+    * add IP 0.0.0.0, Port 80, Disable "Create Listen statement" (if not pressent)
     * add IP 0.0.0.0, Port 443, Disable "Create Listen statement", Enable "SSL Port"
 * System -> Settings -> System settings
     * Use domain name as default value for DocumentRoot path
@@ -58,8 +58,8 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Use libnss-extrausers instead of libnss-mysql
     * TODO: Set mailer to use SMTP
 * Resources -> IPs and Ports
-    * Delete the 10.42.X.X IP
-* System -> Settings -> PHP-FPM 
+    * Delete the 10.42.X.X IP (if pressent)
+* System -> Settings -> PHP-FPM
     * Activate + Save
 * System -> Settings -> Froxlor VirtualHost settings
     * Access Froxlor directly via the hostname
@@ -75,8 +75,7 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Allow automatic database updates
 * PHP -> PHP-FPM versions -> Edit "System default"
     * Rename to "System PHP"
-    * (Version must be changed from 7.0 to 7.3)
-    * php-fpm restart command: service php7.3-fpm restart
+    * php-fpm restart command: /usr/sbin/service php7.3-fpm restart
     * Configuration directory of php-fpm: /etc/php/7.3/fpm/pool.d/
 * System -> Configuration
     * I have configured the System (get rid of the red warning badge)

@@ -19,5 +19,3 @@ mkdir -p /var/customers/logs
 mkdir -p /var/customers/tmp
 chmod 1777 /var/customers/tmp
 echo "done."
-
-/usr/bin/php /etc/init.d/prepare-froxlor.php

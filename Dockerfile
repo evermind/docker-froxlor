@@ -44,6 +44,9 @@ RUN mkdir -p /var/froxlor-data/userdata && \
     chown www-data.www-data /var/froxlor-data/userdata && \
     ln -s /var/froxlor-data/userdata/userdata.inc.php /var/www/froxlor/lib/userdata.inc.php
 
+# Add initial froxlor crontab
+ADD config/froxlor-initial-crontab /etc/cron.d/froxlor
+
 # Configure apache
 ADD config/00_default_froxlor_port_8088.conf /etc/apache2/sites-enabled/00_default_froxlor_port_8088.conf
 RUN a2dissite 000-default && \
@@ -66,7 +69,7 @@ RUN apt-get install -y --no-install-recommends awstats && \
     mv /etc/awstats/awstats.conf /etc/awstats/awstats.model.conf && \
     sed -i.bak 's/^DirData/# DirData/' /etc/awstats//awstats.model.conf && \
     sed -i.bak 's|^\\(DirIcons=\\).*$|\\1\\"/awstats-icon\\"|' /etc/awstats//awstats.model.conf && \
-    echo "# disabled by froxlor docker setup" > /etc/cron.d/awstat
+    echo "# disabled by froxlor docker setup" > /etc/cron.d/awstats
 
 # configure logrotate
 RUN apt-get install -y --no-install-recommends logrotate
