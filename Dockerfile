@@ -84,13 +84,19 @@ RUN rc-update add prepare-system.sh boot
 RUN HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text && \
     HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text | grep -e 'All requirements are satisfied' > /dev/null
 
+# Patching froxlor to allow 0.0.0.0 as IP address
+ADD config/froxlor-pr-760.diff /tmp/froxlor-pr-760.diff
+RUN apt-get install -y --no-install-recommends patch && \
+    cd /var/www/froxlor && patch -p1 < /tmp/froxlor-pr-760.diff
+
 # cleanup, remove unused services and files
 RUN rc-update del mysql default && \
     rc-update del rsync default && \
     rm -f /etc/init.d/hwclock.sh /etc/init.d/procps && \
     rm -rf /tmp /var/lib/apt/lists/*
 
-# 
+
+# Squash image layers into one
 #FROM scratch
 #COPY --from=build / /
 

@@ -11,14 +11,75 @@ The container contains a config that matches with Froxlor 0.10.6. It might chang
 https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submit=
 
 
-# Setup
+# Setup (Kubernetes)
 
-* Deploy using docker-compose or helm chart
+* Deploy using the helm chart
 * The admin interface will be available on port 8088 (without SSL!). It can be used for initial setup and can later be used as emergency admin access
 
 ## Initial setup dialog
 
-TBD
+* Go to your http://{host or ip}:8088
+* Mysql hostname: name of the mysql service (e.g. froxlor-mysql)
+* Mysql password / rootPassword as specified in values.yaml
+* A secure admin password
+* A server name that resolves to the host
+* IP address 0.0.0.0 (=wildcard) because the POD IP can change
+
+## System setup
+
+* login as admin
+
+### System Setup
+
+* System -> Settings -> Panel settings
+    * setup mail sender/recipient
+    * phpMyAdmin URL -> TODO
+    * Allow moving domains between admins
+    * Allow moving domains between customers
+    * Hide mail settings in customer panel (there's no mail support in this docker container yet)
+* System -> Settings -> Account settings
+    * Allow multiple login
+    * Allow login with domains
+    * Allow password reset by admins
+* System -> Settings -> SSL settings
+    * Activate + Save
+    * Enable Let's Encrypt
+    * Switch to the Acme2 Test endpoint until everything works!
+* Resources -> IPs and Ports
+    * add IP 0.0.0.0, Port 80, Disable "Create Listen statement"
+    * add IP 0.0.0.0, Port 443, Disable "Create Listen statement", Enable "SSL Port"
+* System -> Settings -> System settings
+    * Use domain name as default value for DocumentRoot path
+    * IP-address: 0.0.0.0
+    * Default IP/Port: 0.0.0.0:80
+    * Default SSL IP/Port: None
+    * Use libnss-extrausers instead of libnss-mysql
+    * MySQL-Access-Hosts: 10.42.0.0/24 (This is the default POD Network, change if your's differs)
+    * Use libnss-extrausers instead of libnss-mysql
+    * TODO: Set mailer to use SMTP
+* Resources -> IPs and Ports
+    * Delete the 10.42.X.X IP
+* System -> Settings -> PHP-FPM 
+    * Activate + Save
+* System -> Settings -> Froxlor VirtualHost settings
+    * Access Froxlor directly via the hostname
+    * Optional: Domain aliases for froxlor vhost
+    * Enable Let's Encrypt for the froxlor vhost
+    * Enable SSL-redirect for the froxlor vhost
+    * Enable PHP-FPM for the Froxlor vHost
+* System -> Settings -> Statistic settings
+    * Enable AWstats statistics
+* System -> Settings -> Nameserver settings 
+    * Deactivate + Save
+* System -> Settings -> Cronjob settings
+    * Allow automatic database updates
+* PHP -> PHP-FPM versions -> Edit "System default"
+    * Rename to "System PHP"
+    * (Version must be changed from 7.0 to 7.3)
+    * php-fpm restart command: service php7.3-fpm restart
+    * Configuration directory of php-fpm: /etc/php/7.3/fpm/pool.d/
+* System -> Configuration
+    * I have configured the System (get rid of the red warning badge)
 
 
 # Ideas
