@@ -1,6 +1,6 @@
 <?php
 
-require "/var/froxlor-data/userdata/userdata.inc.php";
+require "/var/system/froxlor/userdata.inc.php";
 
 if (!isset($sql)) {
     exec("echo 'Cron: Froxlor not yet configured, skipping init process' >/proc/1/fd/1");

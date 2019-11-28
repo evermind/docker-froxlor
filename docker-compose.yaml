@@ -22,6 +22,4 @@ services:
     - 9080:80
     volumes:
     - ./data/customers:/var/customers
-    - ./data/froxlor:/var/froxlor-data
-
-
+    - ./data/system:/var/system

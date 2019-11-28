@@ -11,10 +11,18 @@ if [ "$1" != "start" ]; then
   exit 0
 fi
 
+echo -n "* Creating and linking ssh keys ... "
+mkdir -p /var/system/ssh
+for t in dsa ecdsa ed25519 rsa; do
+  [ -e /var/system/ssh/ssh_host_${t}_key ] || ssh-keygen -t $t -N "" -f /var/system/ssh/ssh_host_${t}_key
+done
+[ -e /var/system/ssh/authorized_keys ] || touch /var/system/ssh/authorized_keys
+echo "done."
+
 echo -n "* Setting up froxlor data dirs ... "
-mkdir -p /var/froxlor-data/userdata
-[ -e /var/froxlor-data/userdata/userdata.inc.php ] || touch /var/froxlor-data/userdata/userdata.inc.php
-chown -R www-data.www-data /var/froxlor-data/userdata
+mkdir -p /var/system/froxlor
+[ -e /var/system/froxlor/userdata.inc.php ] || touch /var/system/froxlor/userdata.inc.php
+chown -R www-data.www-data /var/system/froxlor
 mkdir -p /var/customers/logs
 mkdir -p /var/customers/tmp
 chmod 1777 /var/customers/tmp

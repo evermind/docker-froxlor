@@ -40,9 +40,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
       less nano
 
 # configure froxlor to use externalized userdata file
-RUN mkdir -p /var/froxlor-data/userdata && \
-    chown www-data.www-data /var/froxlor-data/userdata && \
-    ln -s /var/froxlor-data/userdata/userdata.inc.php /var/www/froxlor/lib/userdata.inc.php
+RUN mkdir -p /var/system/froxlor && \
+    chown www-data.www-data /var/system/froxlor && \
+    ln -s /var/system/froxlor/userdata.inc.php /var/www/froxlor/lib/userdata.inc.php
 
 # Add initial froxlor crontab
 ADD config/froxlor-initial-crontab /etc/cron.d/froxlor
@@ -55,7 +55,6 @@ RUN a2dissite 000-default && \
       proxy_http proxy_ajp proxy_balancer
 
 # configure libnss-extrausers
-
 RUN apt-get install libnss-extrausers && \
     mkdir -p /var/lib/extrausers && \
     touch /var/lib/extrausers/passwd && \
@@ -76,13 +75,20 @@ RUN apt-get install -y --no-install-recommends awstats && \
 RUN apt-get install -y --no-install-recommends logrotate
 ADD config/froxlor-logrotate /etc/logrotate.d/froxlor
 
+# configure ssh
+RUN apt-get install -y --no-install-recommends openssh-server && \
+    mkdir -p /var/system/ssh && \
+    rm -f /etc/ssh/ssh_host_*_key* && \
+    for t in dsa ecdsa ed25519 rsa; do \
+      ln -s /var/system/ssh/ssh_host_${t}_key /etc/ssh/ssh_host_${t}_key; \
+    done && \
+    mkdir -p /root/.ssh && \
+    ln -s /var/system/ssh/authorized_keys /root/.ssh/authorized_keys
+
 # create and activate initalizing script for system start
 ADD config/prepare-system.sh /etc/init.d/prepare-system.sh
 ADD config/prepare-froxlor.php /etc/init.d/prepare-froxlor.php
 RUN rc-update add prepare-system.sh boot
-
-# create initial crontab
-#ADD config/froxlor-crontab /etc/cron.d/froxlor
 
 # Check froxlor prerequisites to ensure all requirements are met
 RUN HTTP_ACCEPT_LANGUAGE="en" php /var/www/froxlor/install/install.php 2>&1 | html2text && \
@@ -105,6 +111,6 @@ RUN rc-update del mysql default && \
 #COPY --from=build / /
 
 # Required for openrc to run without warnings
-VOLUME ["/sys/fs/cgroup","/var/customers","/var/froxlor-data"]
+VOLUME ["/sys/fs/cgroup","/var/customers","/var/system"]
 
 ENTRYPOINT ["/bin/busybox","init"]

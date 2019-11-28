@@ -1,1 +1,3 @@
 /data/
+# ignore helm chart until it's ready to release
+/helm-chart/

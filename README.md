@@ -80,6 +80,10 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
 * System -> Configuration
     * I have configured the System (get rid of the red warning badge)
 
+### SSH Setup
+
+* The root user has no password, add your pub key in ssh/authorized_keys in the "system" volume
+
 
 # Ideas
 
