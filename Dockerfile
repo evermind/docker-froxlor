@@ -37,7 +37,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
       php-curl php-cli php-fpm imagemagick \
       froxlor html2text cron \
       # Install some more useful tools
-      less nano telnet netcat msmtp && \
+      less nano telnet netcat msmtp rsync default-mysql-client && \
       # make sendmail command available
       ln -s /usr/bin/msmtp /usr/sbin/sendmail
 
@@ -64,7 +64,6 @@ RUN apt-get install libnss-extrausers && \
     touch /var/lib/extrausers/shadow
 ADD config/nsswitch.conf /etc/nsswitch.conf
 
-
 # configure awstats
 RUN apt-get install -y --no-install-recommends awstats && \
     ln -s /usr/share/awstats/tools/awstats_buildstaticpages.pl /usr/bin/awstats_buildstaticpages.pl && \
@@ -86,6 +85,10 @@ RUN apt-get install -y --no-install-recommends openssh-server && \
     done && \
     mkdir -p /root/.ssh && \
     ln -s /var/system/ssh/authorized_keys /root/.ssh/authorized_keys
+
+# configure proftpd
+RUN apt-get install -y --no-install-recommends proftpd-basic proftpd-mod-mysql
+ADD config/proftpd/ /etc/proftpd/
 
 # create and activate initalizing script for system start
 ADD config/prepare-system.sh /etc/init.d/prepare-system.sh
@@ -111,7 +114,8 @@ RUN apt-get install -y --no-install-recommends \
     rc-update add php71-fpm default
 
 # cleanup, remove unused services and files
-RUN rm -f /etc/init.d/hwclock.sh /etc/init.d/procps && \
+RUN rc-update del rsync default && \
+    rm -f /etc/init.d/hwclock.sh /etc/init.d/procps && \
     rm -rf /tmp /var/lib/apt/lists/*
 
 
