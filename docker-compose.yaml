@@ -14,6 +14,8 @@ services:
   froxlor:
     build: .
     image: froxlor
+    environment:
+      - TESTKEY=TESTVALUE
     tmpfs:
     - /run
     - /tmp

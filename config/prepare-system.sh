@@ -19,6 +19,27 @@ done
 [ -e /var/system/ssh/authorized_keys ] || touch /var/system/ssh/authorized_keys
 echo "done."
 
+echo -n "* Setting up log dirs ... "
+mkdir -p /var/log/apache2 /var/log/apt
+chown root.adm /var/log/apache2
+echo "done."
+
+if [ ! -z "${SMTP_HOST}" ]; then
+  echo -n "* Setting up smtp relay via ${SMTP_HOST} ... "
+  cat << EOF > /etc/msmtprc
+defaults
+auth           off
+tls            off
+
+account        mailrelay
+host           ${SMTP_HOST}
+from           ${SMTP_SENDER_ADDRESS}
+
+account default : mailrelay
+EOF
+  echo "done."
+fi
+
 echo -n "* Setting up froxlor data dirs ... "
 mkdir -p /var/system/froxlor
 [ -e /var/system/froxlor/userdata.inc.php ] || touch /var/system/froxlor/userdata.inc.php

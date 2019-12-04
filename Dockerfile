@@ -37,7 +37,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
       php-curl php-cli php-fpm imagemagick \
       froxlor html2text cron \
       # Install some more useful tools
-      less nano
+      less nano telnet netcat msmtp && \
+      # make sendmail command available
+      ln -s /usr/bin/msmtp /usr/sbin/sendmail
 
 # configure froxlor to use externalized userdata file
 RUN mkdir -p /var/system/froxlor && \
@@ -109,9 +111,7 @@ RUN apt-get install -y --no-install-recommends \
     rc-update add php71-fpm default
 
 # cleanup, remove unused services and files
-RUN rc-update del mysql default && \
-    rc-update del rsync default && \
-    rm -f /etc/init.d/hwclock.sh /etc/init.d/procps && \
+RUN rm -f /etc/init.d/hwclock.sh /etc/init.d/procps && \
     rm -rf /tmp /var/lib/apt/lists/*
 
 
