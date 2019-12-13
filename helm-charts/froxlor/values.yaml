@@ -22,7 +22,7 @@ mysql:
 froxlor:
   image:
     repository: quay.io/evermind/froxlor
-    tag: latest
+    tag: v0.1.0
     pullPolicy: Always
 
 mailrelay:
