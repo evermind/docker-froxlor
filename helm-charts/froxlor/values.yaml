@@ -1,0 +1,45 @@
+nameOverride: ""
+fullnameOverride: ""
+
+persistence:
+  size: 100Gi
+  type: hostPath
+  # storageClass: default
+#  hostPath: /path/on/the/host
+
+
+mysql:
+  enabled: true
+  image:
+    repository: library/mariadb
+    tag: 10.4.10
+    pullPolicy: IfNotPresent
+  database: froxlor
+  user: froxlor
+  #password:  Chang3m3!
+  #rootPassword: Chang3m3!
+
+froxlor:
+  image:
+    repository: quay.io/evermind/froxlor
+    tag: latest
+    pullPolicy: Always
+
+mailrelay:
+  enabled: false
+  image:
+    repository: micwy/docker-alpine-exim-mailrelay
+    tag: 1.0.4
+    pullPolicy: Always
+  # hostname: helo-hostname for outgoing mails
+
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
