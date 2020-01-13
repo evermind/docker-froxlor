@@ -1,6 +1,12 @@
 nameOverride: ""
 fullnameOverride: ""
 
+# set hostIP to bind all docker container to one specified IP 
+# - helpful if on one host should also reside some other (kubernetes) services
+# - second IP on host must exist 
+# - ensure that all other deployments are bind to an ip explicitly
+hostIP: {} 
+
 persistence:
   size: 100Gi
   type: hostPath
@@ -26,7 +32,7 @@ froxlor:
     pullPolicy: Always
 
 mailrelay:
-  enabled: false
+  enabled: true
   image:
     repository: micwy/docker-alpine-exim-mailrelay
     tag: 1.0.4
