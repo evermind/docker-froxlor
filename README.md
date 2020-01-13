@@ -54,7 +54,7 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Default IP/Port: 0.0.0.0:80
     * Default SSL IP/Port: None
     * Use libnss-extrausers instead of libnss-mysql
-    * MySQL-Access-Hosts: 10.42.0.0/24 (This is the default POD Network, change if your's differs)
+    * MySQL-Access-Hosts: 10.42.0.0/255.255.0.0,localhost (This is the default POD Network, change if your's differs)
     * Use libnss-extrausers instead of libnss-mysql
     * TODO: Set mailer to use SMTP
 * Resources -> IPs and Ports
