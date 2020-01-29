@@ -13,3 +13,8 @@ mysql:
   rootPassword: chang3m3!
 
 podHostname: froxlor
+
+mailrelay:
+  enabled: true
+  hostname: relayhost.example.com
+  senderAddress: mail@example.com
