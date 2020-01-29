@@ -1,0 +1,15 @@
+# Values to be used for "helm lint --strict --values helm-lint-values.yaml"
+# The strict mode has a bug that fails with all missing values, even if "default" is used,
+# so we need to set defaults for everything. See https://github.com/helm/helm/issues/7483
+
+persistence:
+  storageClass: default
+  hostPath: /tmp/path/on/the/host
+
+mysql:
+  database: mailu
+  user: mailu
+  password: chang3m3!
+  rootPassword: chang3m3!
+
+podHostname: froxlor
