@@ -1,6 +1,12 @@
 nameOverride: ""
 fullnameOverride: ""
 
+# set hostIP to bind all docker container to one specified IP 
+# - helpful if on one host should also reside some other (kubernetes) services
+# - second IP on host must exist 
+# - ensure that all other deployments are bind to an ip explicitly
+hostIP: {} 
+
 persistence:
   size: 100Gi
   type: hostPath
