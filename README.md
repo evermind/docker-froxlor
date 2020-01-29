@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/evermind/docker-froxlor.svg?branch=master)](https://travis-ci.org/evermind/docker-froxlor)
+
 # About
 
 This is a debian 10 system which runs apache, php and froxlor web hosting panel.
