@@ -18,7 +18,7 @@ mysql:
   enabled: true
   image:
     repository: library/mariadb
-    tag: 10.4.10
+    tag: 10.4.15
     pullPolicy: IfNotPresent
   database: froxlor
   user: froxlor
