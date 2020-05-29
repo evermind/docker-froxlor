@@ -4,8 +4,28 @@ fullnameOverride: ""
 # set hostIP to bind all docker container to one specified IP 
 # - helpful if on one host should also reside some other (kubernetes) services
 # - second IP on host must exist 
-# - ensure that all other deployments are bind to an ip explicitly
-hostIP: {} 
+# - ensure that all other deployments to the same port are bind to an ip explicitly
+# set to false to completely disable exposing ports through hostIp
+hostIP: "0.0.0.0"
+
+# If set to true, froxlor will be exposed via pipework (getting a real, routet ip address)
+# To use this, pipework daemonset must be installed according to https://github.com/kvaps/kube-pipework/blob/master/docs/3.%20Examples.md#kubernetes
+# and the primary network device must be a bridge (default: br0). The "host_routes" option must be disabled to work with single public routed IPs
+pipework:
+  enabled: false
+  # bridge to assign to
+  bridge: br0
+  # list of ip addresses to allocate
+  ips:
+  - 192.168.1.1/32
+  # default gateway to use
+  gateway: 192.168.1.254
+  # static routes, required to reach other pods/services when the default gateway is changed
+  staticRoutes:
+  - net: 10.42.0.0/16
+    gateway: 169.254.1.1
+  - net: 10.43.0.0/16
+    gateway: 169.254.1.1
 
 persistence:
   size: 100Gi
@@ -18,7 +38,7 @@ mysql:
   enabled: true
   image:
     repository: library/mariadb
-    tag: 10.4.15
+    tag: 10.4.13
     pullPolicy: IfNotPresent
   database: froxlor
   user: froxlor

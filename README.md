@@ -18,6 +18,13 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
 * Deploy using the helm chart
 * The admin interface will be available on port 8088 (without SSL!). It can be used for initial setup and can later be used as emergency admin access
 
+
+## Pipework setup
+
+* Starting with chart version 0.3.0 pipework is supported to obtain an external directly routet IP address. This allows to run multiple
+  froxlor deployments on one kubernetes node without interfering each other
+* TODO: document it
+
 ## Initial setup dialog
 
 * Go to your http://{host or ip}:8088
@@ -48,19 +55,23 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Enable Let's Encrypt
     * Switch to the Acme2 Test endpoint until everything works!
 * Resources -> IPs and Ports
-    * add IP 0.0.0.0, Port 80, Disable "Create Listen statement" (if not pressent)
-    * add IP 0.0.0.0, Port 443, Disable "Create Listen statement", Enable "SSL Port"
+    * For deployments using hostPort/hostIp
+        * add IP 0.0.0.0, Port 80, Disable "Create Listen statement" (if not pressent)
+        * add IP 0.0.0.0, Port 443, Disable "Create Listen statement", Enable "SSL Port"
+    * For deployments using pipework and directly assigned IPs
+        * Primary IP, Port 80 should already be there
+        * add Primary IP, Port 443, Disable "Create Listen statement", Enable "SSL Port"
 * System -> Settings -> System settings
     * Use domain name as default value for DocumentRoot path
-    * IP-address: 0.0.0.0
-    * Default IP/Port: 0.0.0.0:80
-    * Default SSL IP/Port: None
+    * IP-address: 0.0.0.0 (hostPort) or primary IP (pipework)
+    * Default IP/Port: 0.0.0.0:80 (hostPort) or primary IP:80 (pipework)
+    * Default SSL IP/Port: 0.0.0.0:443 (hostPort) or primary IP:443 (pipework)
     * Use libnss-extrausers instead of libnss-mysql
     * MySQL-Access-Hosts: 10.42.0.0/255.255.0.0,localhost (This is the default POD Network, change if your's differs)
     * Use libnss-extrausers instead of libnss-mysql
     * TODO: Set mailer to use SMTP
 * Resources -> IPs and Ports
-    * Delete the 10.42.X.X IP (if pressent)
+    * Delete the 10.42.X.X IP (if pressent, only with hostPort deployment)
 * System -> Settings -> PHP-FPM
     * Activate + Save
 * System -> Settings -> Froxlor VirtualHost settings
@@ -81,6 +92,28 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Configuration directory of php-fpm: /etc/php/7.3/fpm/pool.d/
 * System -> Configuration
     * I have configured the System (get rid of the red warning badge)
+
+### PHP / FPM Configurations
+
+* php 5.6
+    * Restart command: service php56-fpm restart
+    * Config path: /etc/php-fpm/php56-fpm.d/
+* php 7.0
+    * Restart command: service php70-fpm restart
+    * Config path: /etc/php-fpm/php70-fpm.d/
+* php 7.1
+    * Restart command: service php71-fpm restart
+    * Config path: /etc/php-fpm/php71-fpm.d/
+* php 7.2
+    * Restart command: service php72-fpm restart
+    * Config path: /etc/php-fpm/php72-fpm.d/
+* php 7.3
+    * Restart command: service php73-fpm restart
+    * Config path: /etc/php-fpm/php73-fpm.d/
+* php 7.4
+    * Restart command: service php74-fpm restart
+    * Config path: /etc/php-fpm/php74-fpm.d/
+
 
 ### SSH Setup
 

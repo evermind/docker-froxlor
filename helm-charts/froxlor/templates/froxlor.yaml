@@ -17,12 +17,38 @@ spec:
       labels:
         app: {{ include "froxlor.fullname" . }}
         component: froxlor
+      {{- if .Values.pipework.enabled }}
+      annotations:
+        {{- $gateway := (required "pipework.gateway" .Values.pipework.gateway) }}
+        {{- $bridge := (required "pipework.bridge" .Values.pipework.bridge) }}
+        {{- range $index, $ip := (required "pipework.ips" .Values.pipework.ips) }}
+          pipework_cmd_ip{{ $index }}: "{{ $bridge }} -i ip{{ $index }} @CONTAINER_NAME@ {{ $ip }}/32{{- if (eq $index 0) }}@{{ $gateway }}{{ end }}"
+        {{- end }}
+        {{- range $index, $route := (required "pipework.staticRoutes" .Values.pipework.staticRoutes) }}
+          pipework_cmd_route{{ $index }}: "route @CONTAINER_NAME@ add {{ required "route.net" $route.net }} via {{ required "route-gateway" $route.gateway }}"
+        {{- end }}
+      {{- end }}
     spec:
       {{- if .Values.podHostname }}
       hostname: {{ .Values.podHostname }}
       {{- end }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- if .Values.pipework.enabled }}
+      initContainers:
+        - image: kvaps/pipework:v1.0.0
+          name: pipework-wait
+          command:
+            - /bin/sh
+            - -ce
+            - |
+            {{- range $index, $ip := (required "pipework.ips" .Values.pipework.ips) }}
+              echo "Waiting for ip {{ $ip }} at interface ip{{ $index }}"
+              pipework --wait -i ip{{ $index }}
+              echo "ok"
+            {{- end }}
+              echo "All interfaces are up now."
+      {{- end }}
       containers:
       - name: froxlor
         image: {{ .Values.froxlor.image.repository }}:{{ .Values.froxlor.image.tag }}
@@ -51,92 +77,95 @@ spec:
           - name: data
             subPath: log
             mountPath: /var/log
+# Ports are only exposed if hostIp is set (which defaults to 0.0.0.0)
+{{- if .Values.hostIP -}}
         ports:
           - name: http
             containerPort: 80
-            hostPort: 80
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostPort: 80
+            hostIP: {{ .Values.hostIP }}
           - name: https
             containerPort: 443
             hostPort: 443
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: admin
             containerPort: 8088
             hostPort: 8088
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ssh
             containerPort: 22
             hostPort: 2201
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp
             containerPort: 21
             hostPort: 21
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49150
             containerPort: 49150
             hostPort: 49150
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49151
             containerPort: 49151
             hostPort: 49151
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49152
             containerPort: 49152
             hostPort: 49152
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49153
             containerPort: 49153
             hostPort: 49153
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49154
             containerPort: 49154
             hostPort: 49154
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49155
             containerPort: 49155
             hostPort: 49155
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49156
             containerPort: 49156
             hostPort: 49156
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49157
             containerPort: 49157
             hostPort: 49157
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49158
             containerPort: 49158
             hostPort: 49158
             protocol: TCP
-            {{ include "froxlor.hostIP" . }}
+            hostIP: {{ .Values.hostIP }}
           - name: ftp-data-49159
             containerPort: 49159
             hostPort: 49159
             protocol: TCP
+{{- end }}
         livenessProbe:
           httpGet:
             path: /
-            port: admin
+            port: 8088
           periodSeconds: 5
           failureThreshold: 30
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /
-            port: admin
+            port: 8088
           periodSeconds: 10
           failureThreshold: 3
           timeoutSeconds: 5

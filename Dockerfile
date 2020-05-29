@@ -37,7 +37,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
       php-curl php-cli php-fpm imagemagick \
       froxlor html2text cron \
       # Install some more useful tools
-      less nano telnet netcat msmtp rsync default-mysql-client && \
+      less nano telnet netcat msmtp rsync default-mysql-client iputils-ping net-tools iproute2 && \
       # make sendmail command available
       ln -s /usr/bin/msmtp /usr/sbin/sendmail
 
@@ -106,12 +106,18 @@ RUN apt-get install -y --no-install-recommends patch && \
 
 # Adding extra PHP versions
 RUN apt-get install -y --no-install-recommends \
-      php-5.6-opt php-5.6-opt-apcu php-5.6-opt-dba php-5.6-opt-imagick \
-      php-7.0-opt php-7.0-opt-apcu php-7.0-opt-dba php-7.0-opt-imagick \
-      php-7.1-opt php-7.1-opt-apcu php-7.1-opt-dba php-7.1-opt-imagick && \
+      php-5.6-opt php-5.6-opt-apcu php-5.6-opt-dba php-5.6-opt-imagick php-5.6-opt-ioncube \
+      php-7.0-opt php-7.0-opt-apcu php-7.0-opt-dba php-7.0-opt-imagick php-7.0-opt-ioncube \
+      php-7.1-opt php-7.1-opt-apcu php-7.1-opt-dba php-7.1-opt-imagick php-7.1-opt-ioncube \
+      php-7.2-opt php-7.2-opt-apcu php-7.2-opt-dba php-7.2-opt-imagick php-7.2-opt-ioncube php-7.2-opt-redis \
+      php-7.3-opt php-7.3-opt-apcu php-7.3-opt-dba php-7.3-opt-imagick php-7.3-opt-memcached php-7.3-opt-redis \
+      php-7.4-opt php-7.4-opt-apcu php-7.4-opt-dba php-7.4-opt-imagick php-7.4-opt-memcached php-7.4-opt-redis \
+      && \
     rc-update add php56-fpm default && \
     rc-update add php70-fpm default && \
-    rc-update add php71-fpm default
+    rc-update add php71-fpm default && \
+    rc-update add php72-fpm default && \
+    rc-update add php73-fpm default
 
 # cleanup, remove unused services and files
 RUN rc-update del rsync default && \

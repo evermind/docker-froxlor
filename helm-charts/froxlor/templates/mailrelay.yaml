@@ -51,7 +51,6 @@ spec:
         ports:
         - name: smtp
           containerPort: 25
-{{- end }}
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -79,3 +78,4 @@ spec:
   - name: smtp
     port: 25
     protocol: TCP
+{{- end }}
