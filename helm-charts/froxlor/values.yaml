@@ -17,7 +17,7 @@ pipework:
   bridge: br0
   # list of ip addresses to allocate
   ips:
-  - 192.168.1.1/32
+  - 192.168.1.1
   # default gateway to use
   gateway: 192.168.1.254
   # static routes, required to reach other pods/services when the default gateway is changed
