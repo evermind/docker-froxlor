@@ -17,6 +17,9 @@ for t in dsa ecdsa ed25519 rsa; do
   [ -e /var/system/ssh/ssh_host_${t}_key ] || ssh-keygen -t $t -N "" -f /var/system/ssh/ssh_host_${t}_key
 done
 [ -e /var/system/ssh/authorized_keys ] || touch /var/system/ssh/authorized_keys
+mkdir /root/.ssh
+chmod 600 /root/.ssh
+ln -s /var/system/ssh/authorized_keys /root/.ssh/authorized_keys
 echo "done."
 
 echo -n "* Setting up log dirs ... "
