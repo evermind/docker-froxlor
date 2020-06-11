@@ -19,9 +19,35 @@ spec:
       labels:
         app: {{ include "froxlor.fullname" . }}
         component: mailrelay
+      {{- if .Values.pipework.enabled }}
+      annotations:
+        {{- $gateway := (required "pipework.gateway" .Values.pipework.gateway) }}
+        {{- $bridge := (required "pipework.bridge" .Values.pipework.bridge) }}
+        {{- range $index, $ip := (required "pipework.ips" .Values.pipework.ips) }}
+          pipework_cmd_ip{{ $index }}: "{{ $bridge }} -i ip{{ $index }} @CONTAINER_NAME@ {{ $ip }}/32{{- if (eq $index 0) }}@{{ $gateway }}{{ end }}"
+        {{- end }}
+        {{- range $index, $route := (required "pipework.staticRoutes" .Values.pipework.staticRoutes) }}
+          pipework_cmd_route{{ $index }}: "route @CONTAINER_NAME@ add {{ required "route.net" $route.net }} via {{ required "route-gateway" $route.gateway }}"
+        {{- end }}
+      {{- end }}
     spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- if .Values.pipework.enabled }}
+      initContainers:
+        - image: kvaps/pipework:v1.0.0
+          name: pipework-wait
+          command:
+            - /bin/sh
+            - -ce
+            - |
+            {{- range $index, $ip := (required "pipework.ips" .Values.pipework.ips) }}
+              echo "Waiting for ip {{ $ip }} at interface ip{{ $index }}"
+              pipework --wait -i ip{{ $index }}
+              echo "ok"
+            {{- end }}
+              echo "All interfaces are up now."
+      {{- end }}
       containers:
       - name: mailrelay
         image: {{ .Values.mailrelay.image.repository }}:{{ .Values.mailrelay.image.tag }}
