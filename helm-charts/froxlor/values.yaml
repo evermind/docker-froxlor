@@ -59,6 +59,15 @@ mailrelay:
     pullPolicy: Always
   # hostname: helo-hostname for outgoing mails
 
+  # # Optional smarthost. Set username/password if the smarthost requires authentication
+  # smarthost:
+  #   host: smarthost.domain.tld
+  #   username: my_user_name
+  #   password: my_secret_password
+  #   port: 587 
+  #   tls: 
+  #     enabled: true # default true
+
 
 imagePullSecrets: []
 nameOverride: ""

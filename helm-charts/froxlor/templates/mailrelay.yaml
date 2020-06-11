@@ -29,6 +29,26 @@ spec:
         env:
         - name: MAIL_HOSTNAME
           value: "{{ required "mailrelay.hostname" .Values.mailrelay.hostname }}"
+        {{ if .Values.smarthost.host }}
+        - name: SMARTHOST 
+          value: {{ .Values.smarthost.host }}
+        {{ end }}  
+        {{ if .Values.smarthost.port }}
+        - name: SMARTHOST_PORT
+          value: {{ .Values.smarthost.port }}
+        {{ end }}
+        {{ if .Values.smarthost.tls.enabled }}
+        - name: SMARTHOST_TLS
+          value: {{ .Values.smarthost.tls.enabled }}
+        {{ end }}
+        {{ if .Values.smarthost.username }}
+        - name: SMARTHOST_USERNAME 
+          value: {{ .Values.smarthost.username }}
+        {{ end }}
+        {{ if .Values.smarthost.password }} 
+        - name: SMARTHOST_PASSWORD 
+          value: {{ .Values.smarthost.password }}
+        {{ end }}
         livenessProbe:
           tcpSocket:
             port: 25
