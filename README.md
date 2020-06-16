@@ -79,6 +79,7 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
     * Optional: Domain aliases for froxlor vhost
     * Enable Let's Encrypt for the froxlor vhost
     * Enable SSL-redirect for the froxlor vhost
+    * Do not enable PHP-FPM for the Froxlor vHost (needs extra users which are not yet pressent in the docker image)
 * System -> Settings -> Statistic settings
     * Enable AWstats statistics
 * System -> Settings -> Nameserver settings 
