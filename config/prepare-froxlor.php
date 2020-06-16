@@ -22,7 +22,9 @@ exec("sed -i 's/FROXLOR_MYSQL_HOST/".$sql['host']."/' /etc/proftpd/sql.conf");
 exec("sed -i 's/FROXLOR_MYSQL_USER/".$sql['user']."/' /etc/proftpd/sql.conf");
 exec("sed -i 's/FROXLOR_MYSQL_PASSWORD/".$sql['password']."/' /etc/proftpd/sql.conf");
 
-exec("echo 'Cron: Initializing froxlor config.' >/proc/1/fd/1");
+exec("echo 'Cron: Initializing froxlor config (1st run).' >/proc/1/fd/1");
+exec("/usr/bin/php -q /var/www/froxlor/scripts/froxlor_master_cronjob.php --force --debug >/proc/1/fd/1 2>&1");
+exec("echo 'Cron: Initializing froxlor config (2nd run).' >/proc/1/fd/1");
 exec("/usr/bin/php -q /var/www/froxlor/scripts/froxlor_master_cronjob.php --force --debug >/proc/1/fd/1 2>&1");
 
 ?>
