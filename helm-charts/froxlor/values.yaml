@@ -8,6 +8,9 @@ fullnameOverride: ""
 # set to false to completely disable exposing ports through hostIp
 hostIP: "0.0.0.0"
 
+# Set to your external IP when using port mapping via hostIP to make FTP work correctly behind the NAT
+natIp: false
+
 # If set to true, froxlor will be exposed via pipework (getting a real, routet ip address)
 # To use this, pipework daemonset must be installed according to https://github.com/kvaps/kube-pipework/blob/master/docs/3.%20Examples.md#kubernetes
 # and the primary network device must be a bridge (default: br0). The "host_routes" option must be disabled to work with single public routed IPs
@@ -26,6 +29,13 @@ pipework:
     gateway: 169.254.1.1
   - net: 10.43.0.0/16
     gateway: 169.254.1.1
+
+phpmyadmin:
+  enabled: false
+  image:
+    repository: phpmyadmin/phpmyadmin
+    tag: 5.0.2
+    pullPolicy: IfNotPresent
 
 persistence:
   size: 100Gi
@@ -47,8 +57,8 @@ mysql:
 
 froxlor:
   image:
-    repository: quay.io/evermind/froxlor
-    tag: master
+    repository: evermind/froxlor
+    tag: v0.4.0
     pullPolicy: Always
 
 mailrelay:

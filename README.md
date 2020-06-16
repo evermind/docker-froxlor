@@ -119,6 +119,20 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
 
 * The root user has no password, add your pub key in ssh/authorized_keys in the "system" volume
 
+### PHPMyAdmin Setup
+
+If PHPMyAdmin is deployed via helm chart (enable with phpmyadmin.enabled=true), a service is startet at `http://{release-name}-phpmyadmin/`.
+
+To enable access to it go to Resources -> IPs and Ports -> Port 443 and add the following
+
+* to Webserver-SSL-Configuration -> custom SSL vHost Configuration (for the froxlor VHost only)
+* or to Default SSL vHost Configuration (for the froxlor VHost only)
+* replacing `{release-name}` with the actual release name
+
+```
+ProxyPass "/phpmyadmin/" "http://{release-name}-phpmyadmin/"
+ProxyPassReverse "/phpmyadmin/" "http://{release-name}-phpmyadmin/"
+```
 
 # Ideas
 

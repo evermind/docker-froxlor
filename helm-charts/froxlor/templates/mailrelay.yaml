@@ -55,6 +55,7 @@ spec:
         env:
         - name: MAIL_HOSTNAME
           value: "{{ required "mailrelay.hostname" .Values.mailrelay.hostname }}"
+        {{ if .Values.smarthost }}
         {{ if .Values.smarthost.host }}
         - name: SMARTHOST 
           value: {{ .Values.smarthost.host }}
@@ -74,6 +75,7 @@ spec:
         {{ if .Values.smarthost.password }} 
         - name: SMARTHOST_PASSWORD 
           value: {{ .Values.smarthost.password }}
+        {{ end }}
         {{ end }}
         livenessProbe:
           tcpSocket:
