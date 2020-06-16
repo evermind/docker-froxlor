@@ -17,15 +17,21 @@ for t in dsa ecdsa ed25519 rsa; do
   [ -e /var/system/ssh/ssh_host_${t}_key ] || ssh-keygen -t $t -N "" -f /var/system/ssh/ssh_host_${t}_key
 done
 [ -e /var/system/ssh/authorized_keys ] || touch /var/system/ssh/authorized_keys
-mkdir /root/.ssh
+mkdir -p /root/.ssh
 chmod 600 /root/.ssh
-ln -s /var/system/ssh/authorized_keys /root/.ssh/authorized_keys
+[ -e /root/.ssh/authorized_keys ] || ln -s /var/system/ssh/authorized_keys /root/.ssh/authorized_keys
 echo "done."
 
 echo -n "* Setting up log dirs ... "
 mkdir -p /var/log/apache2 /var/log/apt
 chown root.adm /var/log/apache2
 echo "done."
+
+if [ ! -z "${NAT_PUBLIC_IP}" ]; then
+  echo -n "* Setting FTP masquerade address to ${NAT_PUBLIC_IP} .."
+  sed -i -E "s/#?\\s+MasqueradeAddress.*/MasqueradeAddress ${NAT_PUBLIC_IP}/" /etc/proftpd/proftpd.conf
+  echo "done."
+fi
 
 if [ ! -z "${SMTP_HOST}" ]; then
   echo -n "* Setting up smtp relay via ${SMTP_HOST} ... "

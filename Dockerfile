@@ -91,6 +91,7 @@ RUN apt-get install -y --no-install-recommends proftpd-basic proftpd-mod-mysql
 ADD config/proftpd/ /etc/proftpd/
 
 # create and activate initalizing script for system start
+ADD config/update-configs.sh /root/update-configs.sh
 ADD config/prepare-system.sh /etc/init.d/prepare-system.sh
 ADD config/prepare-froxlor.php /etc/init.d/prepare-froxlor.php
 RUN rc-update add prepare-system.sh boot
@@ -126,8 +127,8 @@ RUN rc-update del rsync default && \
 
 
 # Squash image layers into one
-#FROM scratch
-#COPY --from=build / /
+FROM scratch
+COPY --from=build / /
 
 # Required for openrc to run without warnings
 VOLUME ["/sys/fs/cgroup","/var/customers","/var/system"]
