@@ -1,0 +1,44 @@
+
+==== Froxlor is now deployed ====
+
+Next Steps:
+
+* (optional but recommended) Setup a hostname for the admin panel that points to your froxlor IP.
+
+* Open the setup wizard in your browser (
+{{- if .Values.pipework.enabled -}}
+http://{{ first .Values.pipework.ips }}:8088
+{{- else if .Values.natIp -}}
+http://{{ .Values.natIp }}:8088
+{{- else -}}
+your froxlor IP, Port 8088
+{{- end -}})
+
+* Enter your MySQL credentials:
+
+  Host:                {{ include "froxlor.fullname" . }}-mysql
+  Privileged user:     root
+  Privileged password: (root password from your values.yaml)
+  Froxlor database:    {{ required "mysql.database" .Values.mysql.database }}
+  Froxlor user:        {{ required "mysql.user" .Values.mysql.user }}
+  Froxlor password:    (mysql password from your values.yaml)
+
+* Finish the wizard. After 1-2 minutes, a cron job will run and update the system.
+
+* When finished log into froxlor admin panel ({{- if .Values.pipework.enabled -}}
+http://{{ first .Values.pipework.ips }}:8088
+{{- else if .Values.natIp -}}
+http://{{ .Values.natIp }}:8088
+{{- else -}}
+your froxlor IP, Port 8088
+{{- end -}})
+
+* Perform all required setups (see README.md) for details
+{{ if .Values.phpmyadmin.enabled }}
+* You have phpmyadmin enabled (see README.md). Use the following configuration:
+
+  ProxyPass "/phpmyadmin/" "http://{{ include "froxlor.fullname" . }}-phpmyadmin/"
+  ProxyPassReverse "/phpmyadmin/" "http://{{ include "froxlor.fullname" . }}-phpmyadmin/"
+
+{{- end }}
+
