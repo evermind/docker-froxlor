@@ -18,6 +18,10 @@ https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submi
 * Deploy using the helm chart
 * The admin interface will be available on port 8088 (without SSL!). It can be used for initial setup and can later be used as emergency admin access
 
+## Password restrictions
+
+Due to a certain shell logic no special characters may be used! Only use longer alpha-numeric passwords - the longer the better.
+
 
 ## Pipework setup
 
