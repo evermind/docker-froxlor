@@ -100,22 +100,22 @@ Due to a certain shell logic no special characters may be used! Only use longer 
 ### PHP / FPM Configurations
 
 * php 5.6
-    * Restart command: service php56-fpm restart
+    * Restart command: /etc/init.d/php56-fpm restart
     * Config path: /etc/php-fpm/php56-fpm.d/
 * php 7.0
-    * Restart command: service php70-fpm restart
+    * Restart command: /etc/init.d/php70-fpm restart
     * Config path: /etc/php-fpm/php70-fpm.d/
 * php 7.1
-    * Restart command: service php71-fpm restart
+    * Restart command: /etc/init.d/php71-fpm restart
     * Config path: /etc/php-fpm/php71-fpm.d/
 * php 7.2
-    * Restart command: service php72-fpm restart
+    * Restart command: /etc/init.d/php72-fpm restart
     * Config path: /etc/php-fpm/php72-fpm.d/
 * php 7.3
-    * Restart command: service php73-fpm restart
+    * Restart command: /etc/init.d/php73-fpm restart
     * Config path: /etc/php-fpm/php73-fpm.d/
 * php 7.4
-    * Restart command: service php74-fpm restart
+    * Restart command: /etc/init.d/php74-fpm restart
     * Config path: /etc/php-fpm/php74-fpm.d/
 
 

@@ -70,6 +70,7 @@ mailrelay:
   # hostname: helo-hostname for outgoing mails
 
   # # Optional smarthost. Set username/password if the smarthost requires authentication
+  smarthost: {}
   # smarthost:
   #   host: smarthost.domain.tld
   #   username: my_user_name
