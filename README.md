@@ -58,6 +58,7 @@ Due to a certain shell logic no special characters may be used! Only use longer 
     * Activate + Save
     * Enable Let's Encrypt
     * Switch to the Acme2 Test endpoint until everything works!
+    * Disable DNS validation before creating  Let's Encrypt certificate (needed if Default SSL IP is 0.0.0.0:443 (hostPort))
 * Resources -> IPs and Ports
     * For deployments using hostPort/hostIp
         * add IP 0.0.0.0, Port 80, Disable "Create Listen statement" (if not pressent)
