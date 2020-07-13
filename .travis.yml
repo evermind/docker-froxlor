@@ -20,6 +20,7 @@ script:
   - ./helm init --client-only
   - ./helm lint --strict --values helm-charts/froxlor/helm-lint-values.yaml helm-charts/froxlor
   - ./helm3 lint --strict --values helm-charts/froxlor/helm-lint-values.yaml helm-charts/froxlor
+  - echo "TRAVIS_PULL_REQUEST=${TRAVIS_PULL_REQUEST}"
   - |
     if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
       git clone --branch gh-pages git@github.com:evermind/docker-froxlor.git repo
@@ -35,4 +36,3 @@ script:
 branches:
   only:
   - master
-
