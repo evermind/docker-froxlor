@@ -2,15 +2,15 @@ apiVersion: v1
 entries:
   froxlor:
   - apiVersion: v1
-    created: "2020-07-13T11:40:54.270085507Z"
+    created: "2020-09-15T06:55:18.355602263Z"
     description: A Helm chart for froxlor
-    digest: 89242e0007ebcf81422aa19e0aaa9e702b45a83697238c968bd31df2e1f0ca0e
+    digest: 637159124170fb8b95e9a9b176f79668dac42b744a43d12ec6901cfbe7eb06de
     name: froxlor
     urls:
     - https://evermind.github.io/docker-froxlor/froxlor-0.5.0-dev.tgz
     version: 0.5.0-dev
   - apiVersion: v1
-    created: "2020-07-13T11:40:54.269315657Z"
+    created: "2020-09-15T06:55:18.354843271Z"
     description: A Helm chart for froxlor
     digest: 1ef9ab8d1f0d374b5f7efc0c3c6534c4af30f71597a83791c044528f2c56bda1
     name: froxlor
@@ -18,7 +18,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: "2020-07-13T11:40:54.268650827Z"
+    created: "2020-09-15T06:55:18.354030971Z"
     description: A Helm chart for froxlor
     digest: d0b3e0bc6295c672471cd67fc3e15c59d6531526736f220e81739d3719d3eaab
     name: froxlor
@@ -26,7 +26,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.3.0-dev.tgz
     version: 0.3.0-dev
   - apiVersion: v1
-    created: "2020-07-13T11:40:54.268020848Z"
+    created: "2020-09-15T06:55:18.353374786Z"
     description: A Helm chart for froxlor
     digest: a31fb326107ebfc5ff4c860d6b752fe9f81b861e96ce67bfdc476c52f015e702
     name: froxlor
@@ -34,11 +34,11 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.2.0-dev.tgz
     version: 0.2.0-dev
   - apiVersion: v1
-    created: "2020-07-13T11:40:54.267461529Z"
+    created: "2020-09-15T06:55:18.352750412Z"
     description: A Helm chart for froxlor
     digest: 145c491fcfdeca28bc7de59b664b82cd19c4303c15eaf680ae2e2a94fdf5db53
     name: froxlor
     urls:
     - https://evermind.github.io/docker-froxlor/froxlor-0.1.0.tgz
     version: 0.1.0
-generated: "2020-07-13T11:40:54.266317717Z"
+generated: "2020-09-15T06:55:18.35186532Z"
