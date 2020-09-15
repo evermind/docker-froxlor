@@ -118,7 +118,8 @@ RUN apt-get install -y --no-install-recommends \
     rc-update add php70-fpm default && \
     rc-update add php71-fpm default && \
     rc-update add php72-fpm default && \
-    rc-update add php73-fpm default
+    rc-update add php73-fpm default && \
+    rc-update add php74-fpm default
 
 # cleanup, remove unused services and files
 RUN rc-update del rsync default && \
