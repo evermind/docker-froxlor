@@ -25,6 +25,8 @@ echo "done."
 echo -n "* Setting up log dirs ... "
 mkdir -p /var/log/apache2 /var/log/apt
 chown root.adm /var/log/apache2
+mkdir -p /var/log/proftpd 
+
 echo "done."
 
 if [ ! -z "${NAT_PUBLIC_IP}" ]; then
