@@ -58,7 +58,7 @@ mysql:
 froxlor:
   image:
     repository: evermind/froxlor
-    tag: v0.4.2
+    # tag: v0.4.2 # tag get it´s default from chart version
     pullPolicy: Always
 
 mailrelay:

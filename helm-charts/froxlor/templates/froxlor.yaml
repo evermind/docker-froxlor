@@ -51,7 +51,7 @@ spec:
       {{- end }}
       containers:
       - name: froxlor
-        image: {{ .Values.froxlor.image.repository }}:{{ .Values.froxlor.image.tag }}
+        image: {{ .Values.froxlor.image.repository }}:{{ .Values.froxlor.image.tag | default ( printf "v%s" .Chart.Version ) }}
         imagePullPolicy: {{ .Values.froxlor.image.pullPolicy }}
         env:
         {{- if .Values.mailrelay.enabled }}

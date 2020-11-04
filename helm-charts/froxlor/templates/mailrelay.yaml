@@ -62,7 +62,7 @@ spec:
         {{ end }}  
         {{ if .port }}
         - name: SMARTHOST_PORT
-          value: {{ .port }}
+          value: {{ .port | quote }}
         {{ end }}
         {{ if .tls.enabled }}
         - name: SMARTHOST_TLS
