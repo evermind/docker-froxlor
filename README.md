@@ -139,6 +139,14 @@ ProxyPass "/phpmyadmin/" "http://{release-name}-phpmyadmin/"
 ProxyPassReverse "/phpmyadmin/" "http://{release-name}-phpmyadmin/"
 ```
 
+# Upgrade docker image
+
+* change version information at Chart.yaml and values.yaml
+* add current froxlor version as shown in console (new available version) under appVersion in Chart.yaml
+* publih new tag for chart
+
+Travis will build a new Chart for repository. Dockerhub will build a new Docker image based on git tag https://hub.docker.com/repository/docker/evermind/froxlor/tags?page=1&ordering=last_updated
+
 # Ideas
 
 - Use lxcfs to improve user experience: https://medium.com/@Alibaba_Cloud/kubernetes-demystified-using-lxcfs-to-improve-container-resource-visibility-86f48ce20c6

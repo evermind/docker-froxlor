@@ -58,7 +58,7 @@ mysql:
 froxlor:
   image:
     repository: evermind/froxlor
-    tag: v0.4.3 
+    tag: v0.4.4
     pullPolicy: Always
 
 mailrelay:
