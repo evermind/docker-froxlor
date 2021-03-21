@@ -25,3 +25,4 @@ services:
     volumes:
     - ./data/customers:/var/customers
     - ./data/system:/var/system
+    - ./data/root-homedir:/root
