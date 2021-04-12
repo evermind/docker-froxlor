@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   froxlor:
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.112370775Z"
+    created: "2021-04-12T14:39:25.174777073Z"
     description: A Helm chart for froxlor
     digest: 637159124170fb8b95e9a9b176f79668dac42b744a43d12ec6901cfbe7eb06de
     name: froxlor
@@ -11,15 +11,15 @@ entries:
     version: 0.5.0-dev
   - apiVersion: v1
     appVersion: 0.10.23.1
-    created: "2021-01-07T07:14:48.11205147Z"
+    created: "2021-04-12T14:39:25.174397091Z"
     description: A Helm chart for froxlor
-    digest: 16e370d6b92d898c25c0f1cf0b6863127a1cf5ce6fa24daf975ff79eca966971
+    digest: 6c583704e9eee5e71d7db4e41add7edec0ebce2c8ac63f9d6fece01c7df99730
     name: froxlor
     urls:
     - https://evermind.github.io/docker-froxlor/froxlor-0.4.4.tgz
     version: 0.4.4
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.111716217Z"
+    created: "2021-04-12T14:39:25.173958855Z"
     description: A Helm chart for froxlor
     digest: ccffca5736ab668cdc9effa3342e677c6502982398ff59314e020c45d8403b22
     name: froxlor
@@ -27,7 +27,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.4.3.tgz
     version: 0.4.3
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.111369325Z"
+    created: "2021-04-12T14:39:25.173218007Z"
     description: A Helm chart for froxlor
     digest: ad714ad1401dd0ce9cfc3d2fa51ffa7bd5da8d6d9f21843a8ac45ef132459ae5
     name: froxlor
@@ -35,7 +35,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.4.2.tgz
     version: 0.4.2
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.110567131Z"
+    created: "2021-04-12T14:39:25.172591054Z"
     description: A Helm chart for froxlor
     digest: ea4df21563c60bc273578b5cc0e4b75ea4139d3adccc9bb42f96c9545d73ed6e
     name: froxlor
@@ -43,7 +43,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.4.1.tgz
     version: 0.4.1
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.109916221Z"
+    created: "2021-04-12T14:39:25.171953316Z"
     description: A Helm chart for froxlor
     digest: 1ef9ab8d1f0d374b5f7efc0c3c6534c4af30f71597a83791c044528f2c56bda1
     name: froxlor
@@ -51,7 +51,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.4.0.tgz
     version: 0.4.0
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.109214905Z"
+    created: "2021-04-12T14:39:25.171282074Z"
     description: A Helm chart for froxlor
     digest: d0b3e0bc6295c672471cd67fc3e15c59d6531526736f220e81739d3719d3eaab
     name: froxlor
@@ -59,7 +59,7 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.3.0-dev.tgz
     version: 0.3.0-dev
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.108506192Z"
+    created: "2021-04-12T14:39:25.170605573Z"
     description: A Helm chart for froxlor
     digest: a31fb326107ebfc5ff4c860d6b752fe9f81b861e96ce67bfdc476c52f015e702
     name: froxlor
@@ -67,11 +67,11 @@ entries:
     - https://evermind.github.io/docker-froxlor/froxlor-0.2.0-dev.tgz
     version: 0.2.0-dev
   - apiVersion: v1
-    created: "2021-01-07T07:14:48.107880257Z"
+    created: "2021-04-12T14:39:25.169976009Z"
     description: A Helm chart for froxlor
     digest: 145c491fcfdeca28bc7de59b664b82cd19c4303c15eaf680ae2e2a94fdf5db53
     name: froxlor
     urls:
     - https://evermind.github.io/docker-froxlor/froxlor-0.1.0.tgz
     version: 0.1.0
-generated: "2021-01-07T07:14:48.107443052Z"
+generated: "2021-04-12T14:39:25.169540246Z"
