@@ -7,7 +7,7 @@ This is a debian 10 system which runs apache, php and froxlor web hosting panel.
 - Using busybox+openrc as minimal, sysv+docker compatible init system
 - pre-configured system for froxlor
 - debian auto-updates (via cron-apt)
-- external database, external ftp server, allowing independent rolling-updates
+- external database, external ftp(s) server, allowing independent rolling-updates
 
 The container contains a config that matches with Froxlor 0.10.6. It might change over time, required changes can be reviewed at
 https://config.froxlor.org/?distribution=debian_buster&from=0.10.6&to=9999&submit=

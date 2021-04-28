@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ### BEGIN INIT INFO
 # Provides:          prepare-system
 # Default-Start:     2 3 4 5
@@ -59,5 +59,14 @@ mkdir -p /var/customers/logs
 mkdir -p /var/customers/tmp
 chmod 1777 /var/customers/tmp
 echo "done."
+
+echo -n "* Setting up FTPS certificates if not already exists "
+mkdir -p /var/system/ssl/certs
+mkdir -p /var/system/ssl/private
+[ -f /var/system/ssl/certs/proftpd.crt ] || openssl req -new -x509 -newkey rsa:4096 -days 3650 -nodes -out /var/system/ssl/certs/proftpd.crt -keyout /var/system/ssl/private/proftpd.key -subj "${FTP_TLS_SUBJECT}"
+[ -f /var/system/ssl/certs/proftpd_ec.crt ] || openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp521r1) -keyout /var/system/ssl/private/proftpd_ec.key -out /var/system/ssl/certs/proftpd_ec.crt -days 3650 -subj "${FTP_TLS_SUBJECT}"
+chmod 0600 /var/system/ssl/private/proftpd.key /var/system/ssl/private/proftpd_ec.key
+echo "done."
+
 
 /usr/bin/php /etc/init.d/prepare-froxlor.php

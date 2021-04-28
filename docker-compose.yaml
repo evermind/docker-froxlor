@@ -14,14 +14,18 @@ services:
   froxlor:
     build: .
     image: froxlor
+    privileged: true
     environment:
       - TESTKEY=TESTVALUE
+      - FTP_TLS_SUBJECT=/C=DE/ST=State/O=Organization Name/CN=example.com
     tmpfs:
     - /run
     - /tmp
     ports:
     - 8088:8088
     - 9080:80
+    - "21:21"
+    - "49150-49159:49150-49159"
     volumes:
     - ./data/customers:/var/customers
     - ./data/system:/var/system
