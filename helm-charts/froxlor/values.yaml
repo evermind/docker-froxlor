@@ -58,7 +58,7 @@ mysql:
 froxlor:
   image:
     repository: evermind/froxlor
-    tag: v0.4.4
+    tag: v0.4.5
     pullPolicy: Always
   env:
     - name: FTP_TLS_SUBJECT
