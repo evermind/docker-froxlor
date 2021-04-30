@@ -60,6 +60,14 @@ froxlor:
     repository: evermind/froxlor
     tag: v0.4.4
     pullPolicy: Always
+  env:
+    - name: FTP_TLS_SUBJECT
+      value: /C=DE/ST=State/O=Organization Name/CN=example.com
+  
+  # work in progress - not working !
+  panel:
+    ingress:
+      enabled: false
 
 mailrelay:
   enabled: false

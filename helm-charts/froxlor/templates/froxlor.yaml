@@ -64,6 +64,9 @@ spec:
         - name: NAT_PUBLIC_IP
           value: {{ .Values.natIp }}
         {{- end }}
+        {{ with .Values.froxlor.env }}      
+{{ toYaml . | indent 8 }}
+        {{ end }}
         volumeMounts:
           - name: data
             subPath: customers
