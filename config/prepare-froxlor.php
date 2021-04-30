@@ -27,4 +27,7 @@ exec("/usr/bin/php -q /var/www/froxlor/scripts/froxlor_master_cronjob.php --forc
 exec("echo 'Cron: Initializing froxlor config (2nd run).' >/proc/1/fd/1");
 exec("/usr/bin/php -q /var/www/froxlor/scripts/froxlor_master_cronjob.php --force --debug >/proc/1/fd/1 2>&1");
 
+exec("echo 'Cron: restarting proftpd ...' >/proc/1/fd/1");
+exec("/etc/init.d/proftpd restart >/proc/1/fd/1 2>&1");
+
 ?>
