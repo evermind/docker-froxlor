@@ -27,8 +27,6 @@ spec:
         args:
           - --character-set-server=utf8
           - --collation-server=utf8_unicode_ci
-        # soll  kundenermöglichen, andere encodings zu setzen (utf8mb4)
-        # - --skip-character-set-client-handshake
         volumeMounts:
           - name: data
             subPath: mysql
